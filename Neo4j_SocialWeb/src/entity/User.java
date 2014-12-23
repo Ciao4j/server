@@ -7,6 +7,7 @@ public class User {
 	private String account = "";
 	private String password = "";
 	private String nickName = "";
+	private String photo = "";
 	private String sex = "";
 	private String birthday = "";
 	
@@ -44,6 +45,14 @@ public class User {
 	public void setNickName(String nickName) {
 		this.nickName = nickName;
 	}
+	
+	public String getPhoto() {
+		return photo;
+	}
+	public void setPhoto(String photo) {
+		this.photo = photo;
+	}
+	
 	
 	public String getSex() {
 		return sex;

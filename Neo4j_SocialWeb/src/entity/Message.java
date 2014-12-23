@@ -5,6 +5,7 @@ public class Message {
 	private String messageID = "";
 	private String belongToUserAccount = "";
 	private String content = "";
+	private String img = "";
 	
 	public String getLabel() {
 		return label;
@@ -32,6 +33,13 @@ public class Message {
 	}
 	public void setContent(String content) {
 		this.content = content;
+	}
+	
+	public String getImg() {
+		return img;
+	}
+	public void setImg(String img) {
+		this.img = img;
 	}
 
 }
