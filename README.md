@@ -1,4 +1,2 @@
-Ciao4j
-======
-
-Course project of Graph Data Management@PKU
+Ciao4j Server
+=========
