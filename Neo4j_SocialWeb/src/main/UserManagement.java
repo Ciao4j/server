@@ -1,3 +1,6 @@
+package main;
+
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -52,24 +55,33 @@ public class UserManagement {
 		
 	}
 	
-	public void login(String acct,String passw)
+	public int login(String acct,String passw)
 	{
 		Index<Node> Index = graphDb.index().forNodes("user");
 		Node fromNode = Index.get("account", acct).getSingle();
+		if(fromNode==null)
+		{
+			System.out.println("no user!");
+			return -1;
+		}
 		if(fromNode.getProperty("password").equals(passw))
 		{
 			System.out.println("right!");
+			return 1;
 		}
 		else
 		{
 			System.out.println("wrong password!");
+			return 0;
 		}
 	}
 	
 	
 	//修改用户资料，若用户不存在，则创建用户；用户节点主键为account
-	public void changeOrCreateUser(User user) {
+	public int changeOrCreateUser(User user) {
 		Transaction tx = graphDb.beginTx();
+		Boolean ini=false;
+		Boolean stat=false;
 		UniqueFactory<Node> factory;
 		try {
 			factory = new UniqueFactory.UniqueNodeFactory(graphDb,"user") {
@@ -79,6 +91,7 @@ public class UserManagement {
 					created.setProperty("account", properties.get("account"));
 				}
 			};
+			ini = true;
 		}
 		finally {
 			tx.finish();
@@ -97,21 +110,28 @@ public class UserManagement {
 			nodeIndex.add(node, "account", user.getAccount());
 			nodeIndex.add(node, "label", user.getLabel());
 			tx.success();
+			stat = true;
 		}finally {
 			tx.finish();
-		}	
+		}
+		if( ini==true&&stat==true)
+		{
+			return 1;
+		}
+		return 0;
 	}
 
 	//添加好友
-	public void addFriend(String fromAccount,String toAccount){
+	public int addFriend(String fromAccount,String toAccount){
 		relationshipIndex = graphDb.index().forRelationships("relationshipIndex");
 		Index<Node> Index = graphDb.index().forNodes("user");
 		Node fromNode = Index.get("account", fromAccount).getSingle();
 		Node toNode = Index.get("account", toAccount).getSingle();
 		System.out.println(fromNode+"  "+toNode);
+		Boolean flag = false;
 		if(fromNode==null||toNode==null)
 		{
-			return ;
+			return 0;
 		}
 		Transaction tx = graphDb.beginTx();
 		try{
@@ -123,19 +143,27 @@ public class UserManagement {
 			rel.setProperty("name", RelType.IS_A_FRIEND.getName());
 			relationshipIndex.add(rel,"name",RelType.IS_A_FRIEND.getName());
 			tx.success();
+			flag = true;
 		}finally {
 			tx.finish();
 		}
+		if(flag==true)
+		{
+			return 1;
+		}
+		return 0;
 	}
-	public void deleteFriend(String fromAccount,String toAccount){
+	
+	public int deleteFriend(String fromAccount,String toAccount){
 		relationshipIndex = graphDb.index().forRelationships("relationshipIndex");
 		Index<Node> Index = graphDb.index().forNodes("user");
 		Node fromNode = Index.get("account", fromAccount).getSingle();
 		Node toNode = Index.get("account", toAccount).getSingle();
 		System.out.println(fromNode+"  "+toNode);
+		Boolean flag = false;
 		if(fromNode==null||toNode==null)
 		{
-			return ;
+			return 0;
 		}
 		Transaction tx = graphDb.beginTx();
 		try{
@@ -167,13 +195,19 @@ public class UserManagement {
 				}			
 			}
 			tx.success();
+			flag = true;
 		}finally {
 			tx.finish();
 		}
+		if(flag==true)
+		{
+			return 1;
+		}
+		return 0;
 	}
 	
 	//发布消息，创建message节点（主键为messageID），并创建message节点和user节点间的关系
-	public void publishMessage(String userAccount,String messageContent)
+	public int publishMessage(String userAccount,String messageContent)
 	{
 		Message message = new Message();
 		message.setLabel("message");
@@ -183,6 +217,9 @@ public class UserManagement {
 		
 		Transaction tx = graphDb.beginTx();
 		UniqueFactory<Node> factory;
+		Boolean ini=false;
+		Boolean stat = false;
+		
 		try {
 			factory = new UniqueFactory.UniqueNodeFactory(graphDb,"message") {
 				
@@ -191,6 +228,7 @@ public class UserManagement {
 					created.setProperty("messageID", properties.get("messageID"));
 				}
 			};
+			ini=true;
 		}
 		finally {
 			tx.finish();
@@ -207,10 +245,18 @@ public class UserManagement {
 			nodeIndex.add(node, "messageID", message.getMessageID());
 			nodeIndex.add(node, "label", message.getLabel());
 			tx.success();
+			stat = true;
 		}finally {
 			tx.finish();
-		}		
+		}	
+		if(ini==true&&stat==true)
+		{
+			return 1;
+		}
+		return 0;
 	}
+	
+	
 	//创建message到对应user节点间的关系
 	public void createRelationshipFromMessageToUser(Node node,String userAccount)
 	{
@@ -280,10 +326,11 @@ public class UserManagement {
 		
 	}
 	
-	public void findCommonFriends(String acount1 , String acount2)
+	public List<Node> findCommonFriends(String acount1 , String acount2)
 	{
 		Index<Node> Index = graphDb.index().forNodes("user");
 		relationshipIndex = graphDb.index().forRelationships("relationshipIndex");
+		List<Node> rt = new ArrayList<Node>();
 		
 		Node account1 = Index.get("account", acount1).getSingle();
 		Node account2 = Index.get("account", acount2).getSingle();
@@ -310,39 +357,46 @@ public class UserManagement {
 				}
 				if(friendPath1.endNode().getProperty("account").equals(friendPath2.endNode().getProperty("account")))
 				{
+					rt.add(friendPath1.endNode());
 					System.out.println(friendPath1.endNode().getProperty("nickName"));
 					commonFriendsNumbers++;
 				}
 			}
-		}
-		
+		}	
 		System.out.println("Number of common friends found: " + commonFriendsNumbers);	
+		return rt;
 	}
 	
-	public void searchUserByBirth(String Birth)
+	public List<Node> searchUserByBirth(String Birth)
 	{
 		nodeIndex = graphDb.index().forNodes("user");
+		List<Node> rt = new ArrayList<Node>();
 		Iterator node = nodeIndex.query("label", "user").iterator();
 		while(node.hasNext()) {
 			Node N = (Node) node.next() ;
 			if(N.getProperty("birthday").toString().substring(0, 4).equals(Birth))
 			{
+				rt.add(N);
 				System.out.println(N.getProperty("nickName")+"  "+N.getProperty("birthday"));
 			}
 		}
+		return rt;
 	}
 	
-	public void searchUserByNickName(String nickname)
+	public List<Node> searchUserByNickName(String nickname)
 	{
 		nodeIndex = graphDb.index().forNodes("user");
+		List<Node> rt = new ArrayList<Node>();
 		Iterator node = nodeIndex.query("label", "user").iterator();
 		while(node.hasNext()) {
 			Node N = (Node) node.next() ;
 			if(N.getProperty("nickName").equals(nickname))
 			{
+				rt.add(N);
 				System.out.println(N.getProperty("nickName")+"  "+N.getProperty("birthday"));
 			}
 		}
+		return rt;
 	}
 	
 	public void viewMessage()
@@ -355,9 +409,10 @@ public class UserManagement {
 		}
 	}
 	
-	public void viewMessageFromFriends(String account,UserManagement it)
+	public List<Node> viewMessageFromFriends(String account,UserManagement it)
 	{
 		nodeIndex = graphDb.index().forNodes("message");
+		List<Node> rt = new ArrayList<Node>();
 		Iterator node = nodeIndex.query("label", "message").iterator();
 		List<Node> friends = it.printUserFriendByIndexIterator(account);
 		List<String> friendsAcount = new ArrayList<String>();
@@ -370,23 +425,28 @@ public class UserManagement {
 			Node N = (Node) node.next() ;
 			if(friendsAcount.contains(N.getProperty("belongtouser")))
 			{
+				rt.add(N);
 				System.out.println(N.getProperty("content")+"    "+N.getProperty("belongtouser"));
 			}
 		}
+		return rt;
 	}
 	
-	public void viewMessageFromFriend(String account)
+	public List<Node> viewMessageFromFriend(String account)
 	{
 		nodeIndex = graphDb.index().forNodes("message");
+		List<Node> rt = new ArrayList<Node>();
 		Iterator node = nodeIndex.query("label", "message").iterator();
 		
 		while(node.hasNext()){
 			Node N = (Node) node.next() ;
 			if(account.equals(N.getProperty("belongtouser")))
 			{
+				rt.add(N);
 				System.out.println(N.getProperty("content")+"    "+N.getProperty("belongtouser"));
 			}
 		}
+		return rt;
 	}
 	
 	public static void main(String args[]){
