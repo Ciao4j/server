@@ -32,7 +32,7 @@ public class ViewMessageFromFriend extends HttpServlet {
 		 UserManagement u = new UserManagement(db);
 
 		 String username = req.getParameter("username");
-		 String json = "{";
+		 String json = "[";
 		 List<Node> messages = u.viewMessageFromFriend(username);		
 		 List<String> content = new ArrayList<String>();
 		 int messageNum=0;
@@ -46,12 +46,13 @@ public class ViewMessageFromFriend extends HttpServlet {
 			 messageNum++;
 			 content.add(n.getProperty("content").toString());
 			 
-			 tmp += "{\"username\":"+n.getProperty("belongtouser").toString()+",\"nickname\":"+
-					 u.getNickNameByAccount(n.getProperty("belongtouser").toString())+",\"date\":"+n.getProperty("date").toString()
-					 +",\"content\":"+n.getProperty("content").toString()+"}";
+			 tmp += "{\"username\":\""+n.getProperty("belongtouser").toString()+"\",\"nickname\":\""+
+					 u.getNickNameByAccount(n.getProperty("belongtouser").toString())+"\",\"date\":\""+n.getProperty("date").toString()
+					 +"\",\"content\":\""+n.getProperty("content").toString()+"\"}";
 			 json += tmp;
 		 }
-		 json += "}";
+		 json += "]";
+		 System.out.println(json);
 		 System.out.println("success");
 		 session.setAttribute("account", content);
 		 String login_fail = "showFriends.jsp";

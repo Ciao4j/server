@@ -34,7 +34,7 @@ public class registration extends HttpServlet {
 		 String pwd = req.getParameter("pwd");
 		 String nickname = req.getParameter("nickname");
 		 String birthday = req.getParameter("birthday");
-		 String photo = req.getParameter("photo");
+		 String photo = /*req.getParameter("photo");*/"";
 		 String sex = req.getParameter("sex");
 
 		 user.setAccount(username);

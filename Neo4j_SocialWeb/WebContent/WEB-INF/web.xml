@@ -53,7 +53,32 @@
        <servlet-name>AddFriend</servlet-name>
        <url-pattern>/addFriends</url-pattern>
  </servlet-mapping>
+
+ <servlet>
+       <servlet-name>ViewMessageFromFriends</servlet-name>
+       <servlet-class>servlet.ViewMessageFromFriends</servlet-class>
+ </servlet>
+ <servlet-mapping>
+       <servlet-name>ViewMessageFromFriends</servlet-name>
+       <url-pattern>/ciaos</url-pattern>
+ </servlet-mapping>
  
+ <servlet>
+       <servlet-name>ViewMessageFromFriend</servlet-name>
+       <servlet-class>servlet.ViewMessageFromFriend</servlet-class>
+ </servlet>
+ <servlet-mapping>
+       <servlet-name>ViewMessageFromFriend</servlet-name>
+       <url-pattern>/ciaosOf</url-pattern>
+ </servlet-mapping>
  
+ <servlet>
+       <servlet-name>PublishMessage</servlet-name>
+       <servlet-class>servlet.PublishMessage</servlet-class>
+ </servlet>
+ <servlet-mapping>
+       <servlet-name>PublishMessage</servlet-name>
+       <url-pattern>/publish</url-pattern>
+ </servlet-mapping>
  
 </web-app>
