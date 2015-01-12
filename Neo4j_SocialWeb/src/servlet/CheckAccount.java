@@ -33,7 +33,7 @@ public class CheckAccount extends HttpServlet {
 	 String pwd = req.getParameter("pwd");
 //	 account.setPassword(pwd);
 //	 account.setUsername(username);
-	 
+	 String json = "";
 	 
 //	 if((username != null)&&(username.trim().equals("jsp"))) {
 //		 if((pwd != null)&&(pwd.trim().equals("1"))) {
@@ -51,12 +51,20 @@ public class CheckAccount extends HttpServlet {
 			 session.setAttribute("account", username);
 			 String login_suc = "success.jsp";
 			 db.shutdown();
-			 resp.sendRedirect(login_suc);
+			 //resp.sendRedirect(login_suc);
+			 json = "{\"success\":true}";
+			 resp.getWriter().write(json);
+			 resp.getWriter().flush();
+			 resp.getWriter().close();
 			 return;
 	 }
 	 String login_fail = "fail.jsp";
 	 db.shutdown();
-	 resp.sendRedirect(login_fail);
+	 //resp.sendRedirect(login_fail);
+	 json = "{\"success\":false}";
+	 resp.getWriter().write(json);
+	 resp.getWriter().flush();
+	 resp.getWriter().close();
 	 return;
  	}
 }

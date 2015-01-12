@@ -1,7 +1,9 @@
 package main;
 
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -74,6 +76,13 @@ public class UserManagement {
 			System.out.println("wrong password!");
 			return 0;
 		}
+	}
+	
+	public String getNickNameByAccount(String acct)
+	{
+		Index<Node> Index = graphDb.index().forNodes("user");
+		Node fromNode = Index.get("account", acct).getSingle();
+		return fromNode.getProperty("nickName").toString();
 	}
 	
 	
@@ -238,9 +247,15 @@ public class UserManagement {
 			nodeIndex = graphDb.index().forNodes("message");
 			Node node = (Node) factory.getOrCreate("messageID", message.getMessageID());
 			createRelationshipFromMessageToUser(node,message.getBelongToUserAccount());
+			
+			Date now = new Date(); 
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");//可以方便地修改日期格式
+			String hehe = dateFormat.format( now ); 
+			
 			node.setProperty("label", message.getLabel());
 			node.setProperty("belongtouser", message.getBelongToUserAccount());
 			node.setProperty("content", message.getContent());
+			node.setProperty("date", hehe);
 
 			nodeIndex.add(node, "messageID", message.getMessageID());
 			nodeIndex.add(node, "label", message.getLabel());
@@ -379,6 +394,54 @@ public class UserManagement {
 				rt.add(N);
 				System.out.println(N.getProperty("nickName")+"  "+N.getProperty("birthday"));
 			}
+		}
+		return rt;
+	}
+	
+	public List<Node> searchUserByAll(String Birth,String nickname,String sex)
+	{
+		nodeIndex = graphDb.index().forNodes("user");
+		List<Node> rt = new ArrayList<Node>();
+		Iterator node = nodeIndex.query("label", "user").iterator();
+		while(node.hasNext()) {
+			Node N = (Node) node.next() ;
+			rt.add(N);
+		}
+		if(!Birth.equals(""))
+		{
+			List<Node> tmp = new ArrayList<Node>();
+			for(Node N:rt) {
+				if(N.getProperty("birthday").toString().substring(0, 4).equals(Birth))
+				{
+					tmp.add(N);
+					//System.out.println(N.getProperty("nickName")+"  "+N.getProperty("birthday"));
+				}
+			}
+			rt = tmp;
+		}
+		if(!nickname.equals(""))
+		{
+			List<Node> tmp = new ArrayList<Node>();
+			for(Node N:rt) {
+				if(N.getProperty("nickName").equals(nickname))
+				{
+					tmp.add(N);
+					//System.out.println(N.getProperty("nickName")+"  "+N.getProperty("birthday"));
+				}
+			}
+			rt = tmp;
+		}
+		if(!sex.equals(""))
+		{
+			List<Node> tmp = new ArrayList<Node>();
+			for(Node N:rt) {
+				if(N.getProperty("sex").equals(sex))
+				{
+					tmp.add(N);
+					//System.out.println(N.getProperty("nickName")+"  "+N.getProperty("birthday"));
+				}
+			}
+			rt = tmp;
 		}
 		return rt;
 	}

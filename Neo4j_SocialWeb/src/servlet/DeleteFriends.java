@@ -30,18 +30,27 @@ public class DeleteFriends extends HttpServlet {
 
 		 String username1 = req.getParameter("username1");
 		 String username2 = req.getParameter("username2");
+		 String json = "";
 		
 		 if(u.deleteFriend(username1, username2)==1) {
 			 System.out.println("success");
 			 session.setAttribute("account", username1+" deleted friend "+username2);
 			 String login_suc = "success.jsp";
 			 db.shutdown();
-			 resp.sendRedirect(login_suc);
+			 json = "{\"success\":true}";
+			 resp.getWriter().write(json);
+			 resp.getWriter().flush();
+			 resp.getWriter().close();
+			 //resp.sendRedirect(login_suc);
 			 return;
 		 }
 		 String login_fail = "fail.jsp";
 		 db.shutdown();
-		 resp.sendRedirect(login_fail);
+		 json = "{\"success\":false}";
+		 resp.getWriter().write(json);
+		 resp.getWriter().flush();
+		 resp.getWriter().close();
+		// resp.sendRedirect(login_fail);
 		 return;
 	}
 }

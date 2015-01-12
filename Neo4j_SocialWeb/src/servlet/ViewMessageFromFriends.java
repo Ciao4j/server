@@ -32,19 +32,35 @@ public class ViewMessageFromFriends extends HttpServlet {
 		 UserManagement u = new UserManagement(db);
 
 		 String username = req.getParameter("username");
+		 String json = "{";
 		 
 		 List<Node> messages = u.viewMessageFromFriends(username, u);		
 		 List<String> content = new ArrayList<String>();
+		 int messageNum=0;
 		 for(Node n : messages)
 		 {
+			 String tmp = "";
+			 if(messageNum!=0)
+			 {
+				 tmp += ",";
+			 }
+			 messageNum++;
 			 content.add(n.getProperty("content").toString());
+			 
+			 tmp += "{\"username\":"+n.getProperty("belongtouser").toString()+",\"nickname\":"+
+					 u.getNickNameByAccount(n.getProperty("belongtouser").toString())+",\"date\":"+n.getProperty("date").toString()
+					 +",\"content\":"+n.getProperty("content").toString()+"}";
+			 json += tmp;
 		 }
-
+		 json += "}";
 		 System.out.println("success");
 		 session.setAttribute("account", content);
 		 String login_fail = "showFriends.jsp";
 		 db.shutdown();
-		 resp.sendRedirect(login_fail);
+		 //resp.sendRedirect(login_fail);
+		 resp.getWriter().write(json);
+		 resp.getWriter().flush();
+		 resp.getWriter().close();
 		 return;
 	 	}
 	}

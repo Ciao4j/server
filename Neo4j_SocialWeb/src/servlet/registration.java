@@ -43,19 +43,27 @@ public class registration extends HttpServlet {
 		 user.setPassword(pwd);
 		 user.setPhoto(photo);
 		 user.setSex(sex);
-		 
+		 String json = "";
 		 System.out.println("register");
 		 if(u.changeOrCreateUser(user)==1) {
 				 System.out.println("success");
 				 session.setAttribute("account", username);
 				 String login_suc = "success.jsp";
 				 db.shutdown();
-				 resp.sendRedirect(login_suc);
+				 //resp.sendRedirect(login_suc);
+				 json = "{\"success\":true}";
+				 resp.getWriter().write(json);
+				 resp.getWriter().flush();
+				 resp.getWriter().close();
 				 return;
 		 }
 		 String login_fail = "fail.jsp";
 		 db.shutdown();
-		 resp.sendRedirect(login_fail);
+		// resp.sendRedirect(login_fail);
+		 json = "{\"success\":false}";
+		 resp.getWriter().write(json);
+		 resp.getWriter().flush();
+		 resp.getWriter().close();
 		 return;
 	 	}
 

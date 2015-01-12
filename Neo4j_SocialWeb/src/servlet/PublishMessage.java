@@ -30,18 +30,27 @@ public class PublishMessage extends HttpServlet {
 
 		 String username = req.getParameter("username");
 		 String message = req.getParameter("message");
-		
+		 String json = "";
+		 
 		 if(u.publishMessage(username, message)==1) {
 			 System.out.println("success");
 			 session.setAttribute("account", username+" published "+message);
 			 String login_suc = "success.jsp";
 			 db.shutdown();
-			 resp.sendRedirect(login_suc);
+			 json = "{\"success\":true}";
+			 resp.getWriter().write(json);
+			 resp.getWriter().flush();
+			 resp.getWriter().close();
+			 //resp.sendRedirect(login_suc);
 			 return;
 		 }
 		 String login_fail = "fail.jsp";
 		 db.shutdown();
-		 resp.sendRedirect(login_fail);
+		 //resp.sendRedirect(login_fail);
+		 json = "{\"success\":false}";
+		 resp.getWriter().write(json);
+		 resp.getWriter().flush();
+		 resp.getWriter().close();
 		 return;
 	}
 }
