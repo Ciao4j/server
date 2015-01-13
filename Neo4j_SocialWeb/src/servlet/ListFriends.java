@@ -16,7 +16,7 @@ import main.UserManagement;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 
-public class FindFriends extends HttpServlet {
+public class ListFriends extends HttpServlet {
 
 	 @Override
 	 protected void doPost(HttpServletRequest req, HttpServletResponse resp)
@@ -30,19 +30,10 @@ public class FindFriends extends HttpServlet {
 		 HttpSession session = req.getSession();
 		 GraphDatabaseService db = new NeoConnection().getGraphDb();
 		 UserManagement u = new UserManagement(db);
-
-		 String username = req.getParameter("username");
-		 List<Node> myFriends = u.printUserFriendByIndexIterator(username);
-		 List<String> fName = new  ArrayList<String>();
-		 for(Node n:myFriends)
-		 {
-			 fName.add(n.getProperty("account").toString());
-		 }
-		 String birth = req.getParameter("birthday");
-		 String nickname = req.getParameter("nickname");
-		 String sex = req.getParameter("sex");
-		 List<Node> friends = u.searchUserByAll(birth, nickname, sex);
 		 String json = "{";
+		 
+		 String username = req.getParameter("username");
+		 List<Node> friends = u.printUserFriendByIndexIterator(username);		
 		 List<String> friendsName = new ArrayList<String>();
 		 int friendsNum=0;
 		 for(Node n : friends)
@@ -54,15 +45,10 @@ public class FindFriends extends HttpServlet {
 			 }
 			 friendsNum++;
 			 friendsName.add(n.getProperty("nickName").toString());
-			 Boolean isFriend = false;
-			 if(fName.contains(n.getProperty("account")))
-			 {
-				 isFriend = true;
-			 }
+			 
 			 List<Node> commonFriends = u.findCommonFriends(username, n.getProperty("account").toString());
-			 tmp += "{\"username\":\""+n.getProperty("account").toString()+"\",\"nickname\":\""+
-			 n.getProperty("nickName").toString()+"\",\"commonFriendsNum\":\""+commonFriends.size()+"\",\"isFriend\":\""
-			 +isFriend+"\"}";
+			 tmp += "{\"username\":"+n.getProperty("account").toString()+",\"nickname\":"+
+			 n.getProperty("nickName").toString()+",\"commonFriendsNum\":"+commonFriends.size()+"}";
 			 json += tmp;
 		 }
 		 json += "}";

@@ -85,6 +85,13 @@ public class UserManagement {
 		return fromNode.getProperty("nickName").toString();
 	}
 	
+	public Node getUserByAccount(String acct)
+	{
+		Index<Node> Index = graphDb.index().forNodes("user");
+		Node fromNode = Index.get("account", acct).getSingle();
+		return fromNode;
+	}
+	
 	
 	//修改用户资料，若用户不存在，则创建用户；用户节点主键为account
 	public int changeOrCreateUser(User user) {

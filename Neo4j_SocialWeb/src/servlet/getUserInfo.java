@@ -16,8 +16,7 @@ import main.UserManagement;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 
-public class FindFriends extends HttpServlet {
-
+public class getUserInfo extends HttpServlet {
 	 @Override
 	 protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 	   throws ServletException, IOException {
@@ -32,42 +31,30 @@ public class FindFriends extends HttpServlet {
 		 UserManagement u = new UserManagement(db);
 
 		 String username = req.getParameter("username");
+		 String searchUsername = req.getParameter("searchUsername");
+		 Node n = u.getUserByAccount(searchUsername);
+		 
 		 List<Node> myFriends = u.printUserFriendByIndexIterator(username);
 		 List<String> fName = new  ArrayList<String>();
-		 for(Node n:myFriends)
+		 for(Node m:myFriends)
 		 {
-			 fName.add(n.getProperty("account").toString());
+			 fName.add(m.getProperty("account").toString());
 		 }
-		 String birth = req.getParameter("birthday");
-		 String nickname = req.getParameter("nickname");
-		 String sex = req.getParameter("sex");
-		 List<Node> friends = u.searchUserByAll(birth, nickname, sex);
-		 String json = "{";
-		 List<String> friendsName = new ArrayList<String>();
-		 int friendsNum=0;
-		 for(Node n : friends)
+		 Boolean isFriend = false;
+		 if(fName.contains(n.getProperty("account")))
 		 {
-			 String tmp = "";
-			 if(friendsNum!=0)
-			 {
-				 tmp += ",";
-			 }
-			 friendsNum++;
-			 friendsName.add(n.getProperty("nickName").toString());
-			 Boolean isFriend = false;
-			 if(fName.contains(n.getProperty("account")))
-			 {
-				 isFriend = true;
-			 }
-			 List<Node> commonFriends = u.findCommonFriends(username, n.getProperty("account").toString());
-			 tmp += "{\"username\":\""+n.getProperty("account").toString()+"\",\"nickname\":\""+
-			 n.getProperty("nickName").toString()+"\",\"commonFriendsNum\":\""+commonFriends.size()+"\",\"isFriend\":\""
-			 +isFriend+"\"}";
-			 json += tmp;
+			 isFriend = true;
 		 }
-		 json += "}";
+		 
+		 String json = "";
+		
+		 json += "{\"username\":\""+n.getProperty("account").toString()+"\",\"nickname\":\""+
+				 n.getProperty("nickName").toString()+"\",\"gender\":\""+n.getProperty("sex").toString()
+				 +"\",\"birthday\":\""+n.getProperty("birthday").toString()+"\",\"isFriend\":\""+isFriend+"\"}";
+
+
 		 System.out.println("success");
-		 session.setAttribute("account", friendsName);
+
 		 String login_fail = "showFriends.jsp";
 		 db.shutdown();
 		 //resp.sendRedirect(login_fail);
@@ -76,4 +63,5 @@ public class FindFriends extends HttpServlet {
 		 resp.getWriter().close();
 		 return;
 	 	}
-	}
+
+}
