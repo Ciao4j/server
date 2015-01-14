@@ -414,7 +414,7 @@ public class UserManagement {
 			Node N = (Node) node.next() ;
 			rt.add(N);
 		}
-		if(!Birth.equals(""))
+		if(!(Birth==null))
 		{
 			List<Node> tmp = new ArrayList<Node>();
 			for(Node N:rt) {
@@ -426,7 +426,7 @@ public class UserManagement {
 			}
 			rt = tmp;
 		}
-		if(!nickname.equals(""))
+		if(!(nickname==null))
 		{
 			List<Node> tmp = new ArrayList<Node>();
 			for(Node N:rt) {
@@ -438,7 +438,7 @@ public class UserManagement {
 			}
 			rt = tmp;
 		}
-		if(!sex.equals(""))
+		if(!(sex==null))
 		{
 			List<Node> tmp = new ArrayList<Node>();
 			for(Node N:rt) {

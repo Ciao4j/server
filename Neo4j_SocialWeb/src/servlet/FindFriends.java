@@ -47,6 +47,11 @@ public class FindFriends extends HttpServlet {
 		 int friendsNum=0;
 		 for(Node n : friends)
 		 {
+			 if(n.getProperty("account").toString().equals(username.toString()))
+			 {
+				 continue;
+			 }
+			 System.out.println(n.getProperty("account").toString()+n.getProperty("nickName").toString()+username.toString());
 			 String tmp = "";
 			 if(friendsNum!=0)
 			 {
