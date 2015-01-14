@@ -48,9 +48,11 @@ public class getUserInfo extends HttpServlet {
 		 
 		 String json = "";
 		
+		 List<Node> commonFriends = u.findCommonFriends(username, searchUsername);
 		 json += "{\"username\":\""+n.getProperty("account").toString()+"\",\"nickname\":\""+
 				 n.getProperty("nickName").toString()+"\",\"gender\":\""+n.getProperty("sex").toString()
-				 +"\",\"birthday\":\""+n.getProperty("birthday").toString()+"\",\"isFriend\":\""+isFriend+"\"}";
+				 +"\",\"birthday\":\""+n.getProperty("birthday").toString()+"\",\"commonFriendsNum\":\""
+				 +commonFriends.size()+"\",\"isFriend\":\""+isFriend+"\"}";
 
 
 		 System.out.println("success");
