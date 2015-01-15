@@ -524,12 +524,23 @@ public class UserManagement {
 	public static void main(String args[]){
 		GraphDatabaseService db = new NeoConnection().getGraphDb();
 		UserManagement it = new UserManagement(db);
-//		for(int i=4;i<=99;i++)
+		String path = "pic/";
+		
+//		User user = new User();
+//		user.setAccount("33");
+//		user.setBirthday("1991-07-31");
+//		user.setNickName("梅西");
+//		user.setPassword("33");
+//		user.setSex("male");
+//		user.setUserID("3");
+//		user.setPhoto(path+3+".jpg");
+		
+//		for(int i=4;i<=299;i++)
 //		{
 //			String account = i+""+i;
 //			Random random = new Random();
-//			int max=99;
-//	        int min=4;
+//			int max=299;
+//	        int min=1;
 //	        for(int j=0;j<5;j++)
 //	        {
 //				int rr = random.nextInt(max)%(max-min+1) + min;
@@ -543,25 +554,25 @@ public class UserManagement {
 //			String Birthday = "1991-11-11";
 //			String nickname = "test"+i;
 //			String id = i+"";
-//		
-	        
-	        
-//		User user = new User();
-//		user.setAccount(account);
-//		user.setBirthday(Birthday);
-//		user.setNickName(nickname);
-//		user.setPassword(pwd);
-//		user.setSex("female");
-//		user.setUserID(id);
+//		    String photo = "";
+//	        
+//			User user = new User();
+//			user.setAccount(account);
+//			user.setBirthday(Birthday);
+//			user.setNickName(nickname);
+//			user.setPassword(pwd);
+//			user.setSex("female");
+//			user.setUserID(id);
+//			user.setPhoto(photo);
 
 		System.out.println("start building");
 		//it.changeOrCreateUser(user);
-		//}
+//		}
 	//	it.publishMessage("33", "3333333");
 		//it.login("11", "11");
-		//it.addFriend("11", "33");
+		//it.addFriend("22", "33");
 		//it.deleteFriend("11", "33");
-		it.printUserFriendByIndexIterator("7777");
+		//it.printUserFriendByIndexIterator("7777");
 		//it.printUserFriendByTraversal("11");
 		//it.findCommonFriends("11", "22");
 		//it.searchUserByBirth("1991");
@@ -569,7 +580,7 @@ public class UserManagement {
 		//it.viewMessage();
 		//it.viewMessageFromFriends("11", it);
 		//it.viewMessageFromFriend("33");
-		//it.getUserByAccount("88");
+		//it.getUserByAccount("11");
 		db.shutdown();
 //		String xxx = "19913344";
 //		System.out.println(xxx.substring(0, 4));
