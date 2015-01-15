@@ -13,6 +13,7 @@ public class NeoConnection {
 	private GraphDatabaseService graphDb;
 //	private static final String DB_PATH = "D:/neo4jdb/neodb";
 	private static final String DB_PATH = "D:/SocialWeb/graph.db";
+//	private static final String DB_PATH = "D:/SocialWeb1/graph.db";
 	public NeoConnection(){
 //		StoreLocker lock = new StoreLocker(new DefaultFileSystemAbstraction());
 //        lock.checkLock(new File(DB_PATH));

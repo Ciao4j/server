@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
@@ -89,6 +90,7 @@ public class UserManagement {
 	{
 		Index<Node> Index = graphDb.index().forNodes("user");
 		Node fromNode = Index.get("account", acct).getSingle();
+		System.out.println(fromNode.getProperty("nickName")+"  "+fromNode.getProperty("account")+"  "+fromNode.getProperty("birthday"));
 		return fromNode;
 	}
 	
@@ -521,28 +523,53 @@ public class UserManagement {
 	
 	public static void main(String args[]){
 		GraphDatabaseService db = new NeoConnection().getGraphDb();
-//		User user = new User();
-//		user.setAccount("33");
-//		user.setBirthday("19913344");
-//		user.setNickName("Cahill");
-//		user.setPassword("33");
-//		user.setSex("female");
-//		user.setUserID("3");
 		UserManagement it = new UserManagement(db);
+//		for(int i=4;i<=99;i++)
+//		{
+//			String account = i+""+i;
+//			Random random = new Random();
+//			int max=99;
+//	        int min=4;
+//	        for(int j=0;j<5;j++)
+//	        {
+//				int rr = random.nextInt(max)%(max-min+1) + min;
+//				String friend = rr+""+rr;
+//				it.addFriend(account, friend);
+//	        }
+	        
+	        
+//			String account = i+""+i;
+//			String pwd = i+""+i;
+//			String Birthday = "1991-11-11";
+//			String nickname = "test"+i;
+//			String id = i+"";
+//		
+	        
+	        
+//		User user = new User();
+//		user.setAccount(account);
+//		user.setBirthday(Birthday);
+//		user.setNickName(nickname);
+//		user.setPassword(pwd);
+//		user.setSex("female");
+//		user.setUserID(id);
+
 		System.out.println("start building");
-//		it.changeOrCreateUser(user);
+		//it.changeOrCreateUser(user);
+		//}
 	//	it.publishMessage("33", "3333333");
 		//it.login("11", "11");
 		//it.addFriend("11", "33");
 		//it.deleteFriend("11", "33");
-		//it.printUserFriendByIndexIterator("11");
+		it.printUserFriendByIndexIterator("7777");
 		//it.printUserFriendByTraversal("11");
 		//it.findCommonFriends("11", "22");
 		//it.searchUserByBirth("1991");
 		//it.searchUserByNickName("Amy");
 		//it.viewMessage();
 		//it.viewMessageFromFriends("11", it);
-		it.viewMessageFromFriend("33");
+		//it.viewMessageFromFriend("33");
+		//it.getUserByAccount("88");
 		db.shutdown();
 //		String xxx = "19913344";
 //		System.out.println(xxx.substring(0, 4));
