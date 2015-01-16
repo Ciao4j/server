@@ -324,12 +324,13 @@ public class UserManagement {
 	}
 	
 	//递归宽搜找出acount的所有朋友及朋友的朋友
-	public void printUserFriendByTraversal(String acount)
+	public List<Node> printUserFriendByTraversal(String acount,int depth)
 	{
 		Index<Node> Index = graphDb.index().forNodes("user");
 		relationshipIndex = graphDb.index().forRelationships("relationshipIndex");
 		
 		Node fromNode = Index.get("account", acount).getSingle();
+		List<Node> rt = new ArrayList<Node>();
 		
 		TraversalDescription td = Traversal.description()
 		        // 这里是广度优先，也可以定义为深度优先遍历
@@ -340,14 +341,18 @@ public class UserManagement {
 		        .evaluator(Evaluators.excludeStartPosition());
 		int friendsNumbers = 0;
 		for(Path friendPath : td.traverse(fromNode)){
-			System.out.println("At depth " + friendPath.length() + " => "
-		            + friendPath.endNode().getProperty("nickName"));
-		        friendsNumbers++;
+			
+		    if(friendPath.length()==depth&& !(friendPath.endNode().getProperty("account").equals(acount)) )
+		    {
+				rt.add(friendPath.endNode());
+				System.out.println("At depth " + friendPath.length() + " => "
+			            + friendPath.endNode().getProperty("nickName"));
+			    friendsNumbers++;
+		    }
 		}
 		
 		System.out.println("Number of friends found: " + friendsNumbers);
-
-		
+		return rt;	
 	}
 	
 	public List<Node> findCommonFriends(String acount1 , String acount2)
@@ -538,14 +543,14 @@ public class UserManagement {
 		UserManagement it = new UserManagement(db);
 		String path = "pic/";
 		
-		User user = new User();
-		user.setAccount("22");
-		user.setBirthday("1992-01-05");
-		user.setNickName("Nex Zhu");
-		user.setPassword("22");
-		user.setSex("male");
-		user.setUserID("2");
-		user.setPhoto(path+3+".jpg");
+//		User user = new User();
+//		user.setAccount("22");
+//		user.setBirthday("1992-01-05");
+//		user.setNickName("Nex Zhu");
+//		user.setPassword("22");
+//		user.setSex("male");
+//		user.setUserID("2");
+//		user.setPhoto(path+3+".jpg");
 		
 //		for(int i=4;i<=299;i++)
 //		{
@@ -578,14 +583,14 @@ public class UserManagement {
 //			user.setPhoto(photo);
 
 		System.out.println("start building");
-		it.changeOrCreateUser(user);
+		//it.changeOrCreateUser(user);
 //		}
 	//	it.publishMessage("33", "3333333");
 		//it.login("11", "11");
 		//it.addFriend("22", "33");
 		//it.deleteFriend("11", "33");
 		//it.printUserFriendByIndexIterator("7777");
-		//it.printUserFriendByTraversal("11");
+		it.printUserFriendByTraversal("11",3);
 		//it.findCommonFriends("11", "22");
 		//it.searchUserByBirth("1991");
 		//it.searchUserByNickName("Amy");
