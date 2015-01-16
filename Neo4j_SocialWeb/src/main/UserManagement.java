@@ -3,6 +3,7 @@ package main;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -518,6 +519,8 @@ public class UserManagement {
 				System.out.println(N.getProperty("content")+"    "+N.getProperty("belongtouser"));
 			}
 		}
+		Collections.reverse(rt);
+		//System.out.println(rt.get(0).getProperty("content"));
 		return rt;
 	}
 	
@@ -544,12 +547,12 @@ public class UserManagement {
 		String path = "pic/";
 		
 //		User user = new User();
-//		user.setAccount("22");
-//		user.setBirthday("1992-01-05");
-//		user.setNickName("Nex Zhu");
-//		user.setPassword("22");
+//		user.setAccount("33");
+//		user.setBirthday("1991-07-31");
+//		user.setNickName("messi");
+//		user.setPassword("33");
 //		user.setSex("male");
-//		user.setUserID("2");
+//		user.setUserID("3");
 //		user.setPhoto(path+3+".jpg");
 		
 //		for(int i=4;i<=299;i++)
@@ -585,19 +588,19 @@ public class UserManagement {
 		System.out.println("start building");
 		//it.changeOrCreateUser(user);
 //		}
-	//	it.publishMessage("33", "3333333");
+		//it.publishMessage("22", "asfdasdtrwetwetwetrwertweeeeeeeeeeeeeeeeeeeeeeee");
 		//it.login("11", "11");
-		//it.addFriend("22", "33");
+		//it.addFriend("22", "99");
 		//it.deleteFriend("11", "33");
-		//it.printUserFriendByIndexIterator("7777");
-		it.printUserFriendByTraversal("11",3);
+		//it.printUserFriendByIndexIterator("11");
+		//it.printUserFriendByTraversal("11",3);
 		//it.findCommonFriends("11", "22");
 		//it.searchUserByBirth("1991");
 		//it.searchUserByNickName("Amy");
 		//it.viewMessage();
-		//it.viewMessageFromFriends("11", it);
+		it.viewMessageFromFriends("22", it);
 		//it.viewMessageFromFriend("33");
-		//it.getUserByAccount("11");
+		//it.getUserByAccount("33");
 		db.shutdown();
 //		String xxx = "19913344";
 //		System.out.println(xxx.substring(0, 4));
