@@ -32,6 +32,8 @@ public class ViewMessageFromFriends extends HttpServlet {
 		 UserManagement u = new UserManagement(db);
 
 		 String username = req.getParameter("username");
+		 System.out.println(username);
+		 
 		 String json = "[";
 		 
 		 List<Node> messages = u.viewMessageFromFriends(username, u);		

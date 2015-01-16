@@ -407,7 +407,7 @@ public class UserManagement {
 		return rt;
 	}
 	
-	public List<Node> searchUserByAll(String Birth,String nickname,String sex)
+	public List<Node> searchUserByAll(String searchUserName,String Birth,String nickname,String sex)
 	{
 		nodeIndex = graphDb.index().forNodes("user");
 		List<Node> rt = new ArrayList<Node>();
@@ -416,7 +416,19 @@ public class UserManagement {
 			Node N = (Node) node.next() ;
 			rt.add(N);
 		}
-		if(!(Birth==null))
+		if(!(searchUserName==null)&&!(searchUserName.equals("")))
+		{
+			List<Node> tmp = new ArrayList<Node>();
+			for(Node N:rt) {
+				if(N.getProperty("account").equals(searchUserName))
+				{
+					tmp.add(N);
+					//System.out.println(N.getProperty("nickName")+"  "+N.getProperty("birthday"));
+				}
+			}
+			rt = tmp;
+		}
+		if(!(Birth==null)&&!(Birth.equals("")))
 		{
 			List<Node> tmp = new ArrayList<Node>();
 			for(Node N:rt) {
@@ -428,7 +440,7 @@ public class UserManagement {
 			}
 			rt = tmp;
 		}
-		if(!(nickname==null))
+		if(!(nickname==null)&&!(nickname.equals("")))
 		{
 			List<Node> tmp = new ArrayList<Node>();
 			for(Node N:rt) {
@@ -440,7 +452,7 @@ public class UserManagement {
 			}
 			rt = tmp;
 		}
-		if(!(sex==null))
+		if(!(sex==null)&&!(sex.equals("")))
 		{
 			List<Node> tmp = new ArrayList<Node>();
 			for(Node N:rt) {
@@ -526,14 +538,14 @@ public class UserManagement {
 		UserManagement it = new UserManagement(db);
 		String path = "pic/";
 		
-//		User user = new User();
-//		user.setAccount("33");
-//		user.setBirthday("1991-07-31");
-//		user.setNickName("梅西");
-//		user.setPassword("33");
-//		user.setSex("male");
-//		user.setUserID("3");
-//		user.setPhoto(path+3+".jpg");
+		User user = new User();
+		user.setAccount("22");
+		user.setBirthday("1992-01-05");
+		user.setNickName("Nex Zhu");
+		user.setPassword("22");
+		user.setSex("male");
+		user.setUserID("2");
+		user.setPhoto(path+3+".jpg");
 		
 //		for(int i=4;i<=299;i++)
 //		{
@@ -566,7 +578,7 @@ public class UserManagement {
 //			user.setPhoto(photo);
 
 		System.out.println("start building");
-		//it.changeOrCreateUser(user);
+		it.changeOrCreateUser(user);
 //		}
 	//	it.publishMessage("33", "3333333");
 		//it.login("11", "11");

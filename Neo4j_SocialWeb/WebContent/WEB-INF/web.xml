@@ -35,12 +35,12 @@
  
  
 <servlet>
-       <servlet-name>ShowFriends</servlet-name>
+       <servlet-name>FindFriends</servlet-name>
        <servlet-class>servlet.FindFriends</servlet-class>
  </servlet>
  <servlet-mapping>
-       <servlet-name>ShowFriends</servlet-name>
-       <url-pattern>/showFriends</url-pattern>
+       <servlet-name>FindFriends</servlet-name>
+       <url-pattern>/findFriends</url-pattern>
  </servlet-mapping>
  
  
@@ -79,6 +79,24 @@
  <servlet-mapping>
        <servlet-name>PublishMessage</servlet-name>
        <url-pattern>/publish</url-pattern>
+ </servlet-mapping>
+ 
+ <servlet>
+       <servlet-name>ListFriends</servlet-name>
+       <servlet-class>servlet.ListFriends</servlet-class>
+ </servlet>
+ <servlet-mapping>
+       <servlet-name>ListFriends</servlet-name>
+       <url-pattern>/listFriends</url-pattern>
+ </servlet-mapping>
+ 
+  <servlet>
+       <servlet-name>getUserInfo</servlet-name>
+       <servlet-class>servlet.getUserInfo</servlet-class>
+ </servlet>
+ <servlet-mapping>
+       <servlet-name>getUserInfo</servlet-name>
+       <url-pattern>/getUserInfo</url-pattern>
  </servlet-mapping>
  
 </web-app>

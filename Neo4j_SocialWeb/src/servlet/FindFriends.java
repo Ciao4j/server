@@ -38,11 +38,12 @@ public class FindFriends extends HttpServlet {
 		 {
 			 fName.add(n.getProperty("account").toString());
 		 }
+		 String searchUserName = req.getParameter("searchUsername");
 		 String birth = req.getParameter("birthday");
 		 String nickname = req.getParameter("nickname");
 		 String sex = req.getParameter("sex");
-		 List<Node> friends = u.searchUserByAll(birth, nickname, sex);
-		 String json = "{";
+		 List<Node> friends = u.searchUserByAll(searchUserName,birth, nickname, sex);
+		 String json = "[";
 		 List<String> friendsName = new ArrayList<String>();
 		 int friendsNum=0;
 		 for(Node n : friends)
@@ -66,11 +67,11 @@ public class FindFriends extends HttpServlet {
 			 }
 			 List<Node> commonFriends = u.findCommonFriends(username, n.getProperty("account").toString());
 			 tmp += "{\"username\":\""+n.getProperty("account").toString()+"\",\"nickname\":\""+
-			 n.getProperty("nickName").toString()+"\",\"commonFriendsNum\":\""+commonFriends.size()+"\",\"isFriend\":\""
-			 +isFriend+"\"}";
+			 n.getProperty("nickName").toString()+"\",\"commonFriendsNum\":\""+commonFriends.size()+"\",\"isFriend\":"
+			 +isFriend+"}";
 			 json += tmp;
 		 }
-		 json += "}";
+		 json += "]";
 		 System.out.println("success");
 		 session.setAttribute("account", friendsName);
 		 String login_fail = "showFriends.jsp";

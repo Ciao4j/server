@@ -30,9 +30,10 @@ public class ListFriends extends HttpServlet {
 		 HttpSession session = req.getSession();
 		 GraphDatabaseService db = new NeoConnection().getGraphDb();
 		 UserManagement u = new UserManagement(db);
-		 String json = "{";
+		 String json = "[";
 		 
 		 String username = req.getParameter("username");
+		 System.out.println(username);
 		 List<Node> friends = u.printUserFriendByIndexIterator(username);		
 		 List<String> friendsName = new ArrayList<String>();
 		 int friendsNum=0;
@@ -47,11 +48,11 @@ public class ListFriends extends HttpServlet {
 			 friendsName.add(n.getProperty("nickName").toString());
 			 
 			 List<Node> commonFriends = u.findCommonFriends(username, n.getProperty("account").toString());
-			 tmp += "{\"username\":"+n.getProperty("account").toString()+",\"nickname\":"+
-			 n.getProperty("nickName").toString()+",\"commonFriendsNum\":"+commonFriends.size()+"}";
+			 tmp += "{\"username\":\""+n.getProperty("account").toString()+"\",\"nickname\":\""+
+			 n.getProperty("nickName").toString()+"\",\"commonFriendsNum\":\""+commonFriends.size()+"\"}";
 			 json += tmp;
 		 }
-		 json += "}";
+		 json += "]";
 		 System.out.println("success");
 		 session.setAttribute("account", friendsName);
 		 String login_fail = "showFriends.jsp";
