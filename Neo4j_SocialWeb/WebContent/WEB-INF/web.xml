@@ -98,5 +98,14 @@
        <servlet-name>getUserInfo</servlet-name>
        <url-pattern>/getUserInfo</url-pattern>
  </servlet-mapping>
+
+  <servlet>
+       <servlet-name>ListFriendsFriends</servlet-name>
+       <servlet-class>servlet.ListFriendsFriends</servlet-class>
+ </servlet>
+ <servlet-mapping>
+       <servlet-name>ListFriendsFriends</servlet-name>
+       <url-pattern>/listFriendsFriends</url-pattern>
+ </servlet-mapping>
  
 </web-app>
